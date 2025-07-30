@@ -1,0 +1,129 @@
+/* CSS is how you can add style to your website, such as colors, fonts, and positioning of your
+   HTML content. To learn how to do something, just try searching Google for questions like
+   "how to change link color." */
+
+/* Base styles */
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  background-color: cornsilk;
+  color: #333333;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+/* Layout wrapper */
+main {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Header and Footer */
+header, footer {
+  background-color: #f9f5e9; /* soft ivory tint */
+  padding: 20px 0;
+  text-align: center;
+  border-bottom: 2px solid #ccc;
+}
+
+/* Navigation */
+nav {
+  text-align: center;
+  margin: 20px;
+  background-color: transparent;
+  border-bottom: 1px solid #d9cfa7;
+}
+
+nav a {
+  text-decoration: none;
+  color: #2a6ebb;
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Buttons and Links */
+a {
+  color: #2a6ebb;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Headings */
+h1, h2, h3 {
+  color: #2a6ebb;
+}
+
+/* Footer */
+footer {
+  font-size: small;
+  border-top: 1px solid #ccc;
+}
+
+/* Utility Classes */
+.centered {
+  text-align: center;
+}
+
+.notice {
+  color: red;
+  font-weight: bold;
+}
+
+.highlight {
+  background-color: #fdf4c3; /* toned-down yellow */
+}
+
+.box {
+  background-color: #fff8e1; /* warm callout box */
+  border: 2px solid #d4ba89;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px 0;
+}
+
+.btn-dark {
+  display: inline-block;
+  background-color: #2a6ebb; /* rich blue */
+  color: blue;
+  padding: 12px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.btn-dark:hover {
+  background-color: #1e5aa6;
+  text-decoration: none;
+}
+
+.btn-plum {
+  display: inline-block;
+  background-color: #7d4a75; /* soft plum tone */
+  color: blue;
+  padding: 12px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.btn-plum:hover {
+  background-color: #693a63;
+  text-decoration: none;
+}
