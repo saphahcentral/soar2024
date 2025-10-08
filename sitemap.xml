@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Main Pages -->
+  <url>
+    <loc>https://saphahcentral.github.io/soar/index.html</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://saphahcentral.github.io/soar/index2.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://saphahcentral.github.io/soar/about.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://saphahcentral.github.io/soar/contact.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://saphahcentral.github.io/soar/bookshop.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://saphahcentral.github.io/soar/not_found.html</loc>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Optional: static assets if needed (images) -->
+  <url>
+    <loc>https://cdn-images.imagevenue.com/ab/16/df/ME1AW7GL_o.png</loc>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://cdn-images.imagevenue.com/70/bb/3c/ME1AWETZ_o.png</loc>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>
