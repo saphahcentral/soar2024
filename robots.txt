@@ -3,6 +3,7 @@
 # This is the default rule, which allows search engines to crawl your site (recommended).
 User-agent: *
 Disallow: /
+Allow: /header.html
 Allow: /index.html
 Allow: /index2.html
 Allow: /about.html
