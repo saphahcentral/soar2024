@@ -5,89 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SOAR Bookshop</title>
   <link rel="stylesheet" href="https://saphahcentral.github.io/saphah/style-public.css">
+
   <style>
-    .book-cover {
-      border: 2px solid #ccc;
-      border-radius: 4px;
-      margin-bottom: 10px;
-      width: 150px;
-      height: auto;
-    }
-    .book-block {
-      margin-bottom: 40px;
-      padding-bottom: 10px;
-      border-bottom: 1px dashed #aaa;
-      text-align: center;
-    }
-    .bookshop-header {
-      text-align: center;
-      margin-top: 30px;
-    }
-    .book-btn {
-      margin-top: 10px;
-      display: inline-block;
-    }
-    .donation a {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 20px;
-      background-color: #4caf50;
-      color: white;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .donation a:hover {
-      background-color: #2e5e2e;
-    }
-    .note {
-      text-align: center;
-      font-style: italic;
-      margin: 20px 0;
-    }
-    .free-resources {
-      text-align: center;
-      margin: 30px 0;
-    }
-    .free-resources a {
-      font-weight: bold;
-      text-decoration: underline;
-    }
+    .book-cover { border: 2px solid #ccc; border-radius: 4px; margin-bottom: 10px; width: 150px; height: auto; }
+    .book-block { margin-bottom: 40px; padding-bottom: 10px; border-bottom: 1px dashed #aaa; text-align: center; }
+    .bookshop-header { text-align: center; margin-top: 30px; }
+    .book-btn { margin-top: 10px; display: inline-block; }
+    .donation a { display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: #4caf50; color: white; border-radius: 8px; text-decoration: none; font-weight: bold; }
+    .donation a:hover { background-color: #2e5e2e; }
+    .note { text-align: center; font-style: italic; margin: 20px 0; }
+    .free-resources { text-align: center; margin: 30px 0; }
+    .free-resources a { font-weight: bold; text-decoration: underline; }
   </style>
+
+  <!-- Dynamic includes for header, nav, footer -->
+  <script defer>
+    async function loadInclude(id, file) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      try {
+        const res = await fetch(file);
+        if (!res.ok) throw new Error(`Failed to fetch ${file}`);
+        el.innerHTML = await res.text();
+      } catch(err) {
+        el.innerHTML = `<p style="color:red; text-align:center;">Failed to load ${file}</p>`;
+        console.error(err);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      loadInclude('header-placeholder', 'header.html');
+      loadInclude('nav-placeholder', 'nav_bar.html');
+      loadInclude('footer-placeholder', 'footer.html');
+    });
+  </script>
 </head>
 <body>
 
-  <nav>
-    <a href="index.html">Home</a> |
-    <a href="index2.html">Index</a> |
-    <a href="about.html">About</a> |
-    <a href="contact.html">Contact</a> |
-    <a href="bookshop.html">Bookshop</a> |
-    <a href="https://soarsupport2024.blogspot.com/p/disclosures.html" target="_blank">Disclosures</a> |
-    <a href="https://soarsupport2024.blogspot.com/p/stats.html" target="_blank">Promo Info</a>
-  </nav>
+  <!-- Dynamic Header & Nav -->
+  <div id="header-placeholder"></div>
+  <div id="nav-placeholder"></div>
 
   <header>
     <h1 class="bookshop-header">SOAR E-Book Shop</h1>
   </header>
 
   <main>
-
     <p class="centered">
       These titles are offered as free resources, faith-based encouragement, or outreach support. Some link to partner ministries. All materials are static and available to read, download, or order manually.
     </p>
 
-    <!-- First Book – Local/Internal Only with PayPal Donation -->
-    <div class="book-block">
-      <img src="https://cdn-images.imagevenue.com/70/bb/3c/ME1AWETZ_o.png" alt="SOAR Book" class="book-cover" />
-      <h3>SOAR E-Handbook</h3>
-      <p>A guide to natural healing.</p>
-      <div class="donation">
-        <a href="https://PayPal.me/swdb2018" target="_blank">
-          Donate $9.99 to Support SOAR
-        </a>
-      </div>
-    </div>
+    <!-- Container for dynamic books -->
+    <div id="books-container"></div>
 
     <p class="note">New items coming soon!</p>
 
@@ -96,12 +64,56 @@
         FREE RESOURCES – Estcourt Hospice Cancer Support Group Resource Library
       </a>
     </div>
-
   </main>
 
-  <footer>
-    &copy; 2025 SOAR Support Group
-  </footer>
+  <!-- Dynamic Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Load catalog.json and render books -->
+  <script defer>
+    async function loadCatalog() {
+      try {
+        const res = await fetch('catalog.json');
+        const catalog = await res.json();
+        const container = document.getElementById('books-container');
+
+        catalog.forEach(item => {
+          const block = document.createElement('div');
+          block.className = 'book-block';
+
+          const img = document.createElement('img');
+          img.src = item.thumb;
+          img.alt = item.title;
+          img.className = 'book-cover';
+          block.appendChild(img);
+
+          const title = document.createElement('h3');
+          title.textContent = item.title;
+          block.appendChild(title);
+
+          const desc = document.createElement('p');
+          desc.textContent = item.description || '';
+          block.appendChild(desc);
+
+          if(item.price && item.price > 0){
+            const donateDiv = document.createElement('div');
+            donateDiv.className = 'donation';
+            const link = document.createElement('a');
+            link.href = `sales.html?code=${item.code}`;
+            link.textContent = `Order $${item.price} - Contact SOAR to order`;
+            donateDiv.appendChild(link);
+            block.appendChild(donateDiv);
+          }
+
+          container.appendChild(block);
+        });
+      } catch(err) {
+        console.error('Error loading catalog:', err);
+        document.getElementById('books-container').innerHTML = '<p style="color:red; text-align:center;">Failed to load catalog.</p>';
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadCatalog);
+  </script>
 
 </body>
 </html>
