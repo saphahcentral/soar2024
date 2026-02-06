@@ -4,23 +4,23 @@
   "default_price": 9.99,
   "items": [
     {
-      "id": "cancer-support-herbal-garden",
-      "title": "Cancer Support Herbal Garden",
-      "type": "ebook",
-      "price": 9.99,
-      "thumb": "https://saphahcentral.github.io/soar2024/THUMBS/Cancer Support Herbal Garden.jpg",
-      "pdf": "https://saphahcentral.github.io/soar2024/PDFS/Cancer Support Herbal Garden.pdf",
-      "description": "A practical, compassionate guide to cultivating and using supportive herbal remedies for those facing cancer and chronic illness.",
-      "status": "active"
-    },
-    {
-      "id": "natural-healing",
+      "id": "SOAR001",
       "title": "Natural Healing",
       "type": "ebook",
       "price": 9.99,
       "thumb": "https://saphahcentral.github.io/soar2024/THUMBS/Natural Healing.png",
       "pdf": "https://saphahcentral.github.io/soar2024/PDFS/Natural Healing.pdf",
       "description": "A foundational guide to natural healing principles, holistic care, and lifestyle-based wellness approaches.",
+      "status": "active"
+    },
+        {
+      "id": "SOAR002",
+      "title": "Cancer Support Herbal Garden",
+      "type": "ebook",
+      "price": 9.99,
+      "thumb": "https://saphahcentral.github.io/soar2024/THUMBS/Cancer Support Herbal Garden.jpg",
+      "pdf": "https://saphahcentral.github.io/soar2024/PDFS/Cancer Support Herbal Garden.pdf",
+      "description": "A practical, compassionate guide to cultivating and using supportive herbal remedies for those facing cancer and chronic illness.",
       "status": "active"
     }
   ]
