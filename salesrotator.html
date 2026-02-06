@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOAR Featured E-Book</title>
+  <link rel="stylesheet" href="https://saphahcentral.github.io/saphah/style-public.css">
+  <style>
+    .rotator {
+      text-align: center;
+      margin: 20px;
+    }
+    .rotator img {
+      max-width: 200px;
+      height: auto;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+    }
+    .rotator h3 {
+      margin: 10px 0 5px 0;
+    }
+    .rotator p {
+      margin: 0 0 10px 0;
+    }
+    .rotator a {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: royalblue;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .rotator a:hover {
+      background-color: navy;
+    }
+  </style>
+</head>
+<body>
+  <div class="rotator" id="rotator-placeholder">
+    Loading featured e-book...
+  </div>
+
+  <script defer>
+    // Fetch catalog.json and pick a random e-book
+    fetch('catalog.json')
+      .then(response => response.json())
+      .then(data => {
+        if (!data || !data.length) return;
+
+        const randomIndex = Math.floor(Math.random() * data.length);
+        const book = data[randomIndex];
+
+        const html = `
+          <img src="${book.thumb}" alt="${book.title}" />
+          <h3>${book.title}</h3>
+          <p>${book.description}</p>
+          <a href="sales.html?code=${book.code}">View / Order Now</a>
+        `;
+        document.getElementById('rotator-placeholder').innerHTML = html;
+      })
+      .catch(err => {
+        console.error('Error loading catalog.json:', err);
+        document.getElementById('rotator-placeholder').innerHTML = 'Unable to load e-book at this time.';
+      });
+  </script>
+</body>
+</html>
