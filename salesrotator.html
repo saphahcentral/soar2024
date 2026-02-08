@@ -40,43 +40,29 @@
   </style>
 
 <script defer>
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
+  const rotator = document.getElementById("rotator-placeholder");
 
-    fetch("https://saphahcentral.github.io/soar2024/catalog.json")
-      .then(res => {
-        if (!res.ok) throw new Error("Fetch failed");
-        return res.json();
-      })
-      .then(items => {
-        if (!items || !items.length) {
-          throw new Error("Catalog empty");
-        }
+  fetch("https://saphahcentral.github.io/soar2024/catalog.json")
+    .then(res => res.json())
+    .then(data => {
+      if (!Array.isArray(data.items) || !data.items.length) throw new Error("No catalog items found");
 
-        const book = items[Math.floor(Math.random() * items.length)];
-        const target = document.getElementById("rotator-placeholder");
+      const book = data.items[Math.floor(Math.random() * data.items.length)];
 
-        if (!target) {
-          throw new Error("Rotator placeholder missing");
-        }
-
-        target.innerHTML = `
-          <img src="${book.thumb}" alt="${book.title}">
-          <h3>${book.title}</h3>
-          <p>${book.description}</p>
-          <a href="sales.html?code=${book.code}">View / Order Now</a>
-        `;
-      })
-      .catch(err => {
-        console.error("Sales rotator error:", err);
-        const target = document.getElementById("rotator-placeholder");
-        if (target) {
-          target.innerText = "Featured item unavailable at this time.";
-        }
-      });
-
-  });
+      rotator.innerHTML = `
+        <img src="${book.thumb}" alt="${book.title}">
+        <h3>${book.title}</h3>
+        <p>${book.description}</p>
+        <a href="sales.html?code=${book.id}">View / Order Now</a>
+      `;
+    })
+    .catch(err => {
+      console.error(err);
+      rotator.innerText = "Featured item unavailable at this time.";
+    });
+});
 </script>
-
 </head>
 
 <body>
