@@ -3,114 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SOAR Bookshop</title>
-
+  <title>SOAR Bookshop - Product</title>
   <link rel="stylesheet" href="https://saphahcentral.github.io/saphah/style-public.css">
 
   <style>
-    .product {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .product img {
-      max-width: 260px;
-      margin: 20px 0;
-      border-radius: 6px;
-    }
-
-    .price {
-      font-size: 1.6em;
-      font-weight: bold;
-      margin: 20px 0;
-      color: #2b6cb0;
-    }
-
-    .buy-btn {
-      display: inline-block;
-      padding: 14px 30px;
-      background: royalblue;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 6px;
-      font-size: 1.1em;
-    }
-
-    .error {
-      color: darkred;
-      font-weight: bold;
-    }
+    .product-wrapper { max-width: 900px; margin: 40px auto; padding: 20px; text-align: center; }
+    .product-wrapper img { max-width: 250px; height: auto; margin-bottom: 20px; border-radius: 6px; }
+    .price { font-size: 1.5em; font-weight: bold; margin: 15px 0; color: #2b6cb0; }
+    .book-btn { margin: 10px; display: inline-block; }
+    .buy-btn, .book-btn a { display: inline-block; margin-top: 10px; padding: 14px 30px; background-color: royalblue; color: #fff; text-decoration: none; font-size: 1.1em; border-radius: 6px; }
+    .buy-btn:hover, .book-btn a:hover { background-color: navy; }
+    .error { color: red; font-size: 1.2em; margin-top: 50px; }
   </style>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
 
-  const container = document.getElementById("product");
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
+  <!-- Dynamic header, nav, footer + sales logic -->
+  <script defer>
+    async function loadInclude(id, file) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      try {
+        const res = await fetch(file);
+        if (!res.ok) throw new Error(`Failed to fetch ${file}`);
+        el.innerHTML = await res.text();
+      } catch(err) {
+        el.innerHTML = `<p style="color:red; text-align:center;">Failed to load ${file}</p>`;
+        console.error(err);
+      }
+    }
 
-  if (!code) {
-    container.innerHTML = "<p class='error'>No product code supplied.</p>";
-    return;
-  }
+    async function loadProduct() {
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get('code');
+      const container = document.getElementById('product');
 
-  fetch("https://saphahcentral.github.io/soar2024/catalog.json")
-    .then(res => {
-      if (!res.ok) throw new Error("JSON fetch failed");
-      return res.json();
-    })
-    .then(items => {
-
-      if (!Array.isArray(items)) {
-        throw new Error("Catalog is not an array");
+      if (!productId) {
+        container.innerHTML = `<p class="error">No product specified.</p>`;
+        return;
       }
 
-      const book = items.find(b => b.code === code);
+      try {
+        const res = await fetch('https://saphahcentral.github.io/soar2024/catalog.json');
+        const data = await res.json();
+        const product = data.items.find(p => p.id === productId);
 
-      if (!book) {
-        throw new Error("Product not found: " + code);
+        if (!product) {
+          container.innerHTML = `<p class="error">Product not found.</p>`;
+          return;
+        }
+
+        container.innerHTML = `
+          <h2>${product.title}</h2>
+          <img src="${product.thumb}" alt="${product.title}">
+          <p>${product.description}</p>
+          <div class="price">$${product.price}</div>
+          <div class="book-btn">
+            <a href="mailto:soar6027@outlook.com?subject=SOAR%20Order&body=Hello%2C%20I%20would%20like%20to%20order..." target="_blank" rel="noopener noreferrer">Contact SOAR to order</a>
+          </div>
+          <div class="book-btn">
+            <a href="${product.pdf}" target="_blank" rel="noopener noreferrer">Read Online</a>
+          </div>
+        `;
+      } catch(err) {
+        console.error(err);
+        container.innerHTML = `<p class="error">Unable to load product.</p>`;
       }
+    }
 
-      container.innerHTML = `
-        <h2>${book.title}</h2>
-        <img src="${book.image}" alt="${book.title}">
-        <p>${book.description}</p>
-        <div class="price">${book.price}</div>
-        <a class="buy-btn"
-           href="${book.order}"
-           target="_blank"
-           rel="noopener">
-           Order / Enquire
-        </a>
-      `;
-    })
-    .catch(err => {
-      console.error(err);
-      container.innerHTML = `
-        <p class="error">
-          Unable to load product details.<br>
-          (${err.message})
-        </p>
-      `;
+    document.addEventListener('DOMContentLoaded', () => {
+      loadInclude('header-placeholder', 'header.html');
+      loadInclude('nav-placeholder', 'nav_bar.html');
+      loadInclude('footer-placeholder', 'footer.html');
+      loadProduct();
     });
-
-});
-</script>
+  </script>
 </head>
 
 <body>
+  <div id="header-placeholder"></div>
+  <div id="nav-placeholder"></div>
 
-<header></header>
-<nav></nav>
+  <main>
+    <div class="product-wrapper" id="product">
+      Loading product...
+    </div>
+  </main>
 
-<main>
-  <div id="product" class="product">
-    Loading product…
-  </div>
-</main>
-
-<footer></footer>
-
+  <div id="footer-placeholder"></div>
 </body>
 </html>
