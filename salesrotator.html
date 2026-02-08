@@ -39,17 +39,27 @@
     }
   </style>
 
-  <script defer>
+<script defer>
+  document.addEventListener("DOMContentLoaded", () => {
+
     fetch("https://saphahcentral.github.io/soar2024/catalog.json")
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Fetch failed");
+        return res.json();
+      })
       .then(items => {
         if (!items || !items.length) {
           throw new Error("Catalog empty");
         }
 
         const book = items[Math.floor(Math.random() * items.length)];
+        const target = document.getElementById("rotator-placeholder");
 
-        document.getElementById("rotator-placeholder").innerHTML = `
+        if (!target) {
+          throw new Error("Rotator placeholder missing");
+        }
+
+        target.innerHTML = `
           <img src="${book.thumb}" alt="${book.title}">
           <h3>${book.title}</h3>
           <p>${book.description}</p>
@@ -57,11 +67,15 @@
         `;
       })
       .catch(err => {
-        console.error(err);
-        document.getElementById("rotator-placeholder").innerText =
-          "Featured item unavailable at this time.";
+        console.error("Sales rotator error:", err);
+        const target = document.getElementById("rotator-placeholder");
+        if (target) {
+          target.innerText = "Featured item unavailable at this time.";
+        }
       });
-  </script>
+
+  });
+</script>
 
 </head>
 
