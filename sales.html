@@ -3,34 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SOAR Bookshop - Product</title>
+  <title>SOAR E-Book Details</title>
+
   <link rel="stylesheet" href="https://saphahcentral.github.io/saphah/style-public.css">
 
+  <!-- Dynamic includes -->
+  <script src="https://saphahcentral.github.io/saphah/includes-public.js" defer></script>
+
   <style>
-    .product-wrapper { max-width: 900px; margin: 40px auto; padding: 20px; text-align: center; }
-    .product-wrapper img { max-width: 250px; height: auto; margin-bottom: 20px; border-radius: 6px; }
-    .price { font-size: 1.5em; font-weight: bold; margin: 15px 0; color: #2b6cb0; }
-    .book-btn { margin: 10px; display: inline-block; }
-    .buy-btn, .book-btn a { display: inline-block; margin-top: 10px; padding: 14px 30px; background-color: royalblue; color: #fff; text-decoration: none; font-size: 1.1em; border-radius: 6px; }
-    .buy-btn:hover, .book-btn a:hover { background-color: navy; }
-    .error { color: red; font-size: 1.2em; margin-top: 50px; }
+    .product-wrapper {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
+    }
+    .product-wrapper img {
+      max-width: 250px;
+      height: auto;
+      margin-bottom: 20px;
+      border-radius: 6px;
+    }
+    .price {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin: 15px 0;
+      color: #2b6cb0;
+    }
+    .buy-btn, .read-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 12px 28px;
+      background-color: royalblue;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1em;
+      border-radius: 6px;
+    }
+    .read-btn { background-color: darkgreen; }
+    .error {
+      color: red;
+      font-size: 1.2em;
+      margin-top: 50px;
+    }
   </style>
 
-  <!-- Dynamic header, nav, footer + sales logic -->
   <script defer>
-    async function loadInclude(id, file) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      try {
-        const res = await fetch(file);
-        if (!res.ok) throw new Error(`Failed to fetch ${file}`);
-        el.innerHTML = await res.text();
-      } catch(err) {
-        el.innerHTML = `<p style="color:red; text-align:center;">Failed to load ${file}</p>`;
-        console.error(err);
-      }
-    }
-
+    // Extract product from catalog.json and render page
     async function loadProduct() {
       const params = new URLSearchParams(window.location.search);
       const productId = params.get('code');
@@ -43,8 +61,9 @@
 
       try {
         const res = await fetch('https://saphahcentral.github.io/soar2024/catalog.json');
-        const data = await res.json();
-        const product = data.items.find(p => p.id === productId);
+        const catalog = await res.json();
+
+        const product = catalog.items.find(p => p.id === productId);
 
         if (!product) {
           container.innerHTML = `<p class="error">Product not found.</p>`;
@@ -55,39 +74,35 @@
           <h2>${product.title}</h2>
           <img src="${product.thumb}" alt="${product.title}">
           <p>${product.description}</p>
-          <div class="price">$${product.price}</div>
-          <div class="book-btn">
-            <a href="mailto:soar6027@outlook.com?subject=SOAR%20Order&body=Hello%2C%20I%20would%20like%20to%20order..." target="_blank" rel="noopener noreferrer">Contact SOAR to order</a>
-          </div>
-          <div class="book-btn">
-            <a href="${product.pdf}" target="_blank" rel="noopener noreferrer">Read Online</a>
-          </div>
+          <div class="price">$${product.price.toFixed(2)}</div>
+          <a href="${product.pdf}" target="_blank" rel="noopener noreferrer" class="read-btn">READ ONLINE</a>
+          <a href="mailto:soar6027@outlook.com?subject=SOAR%20Order&body=Hello,%20I%20would%20like%20to%20order%20${encodeURIComponent(product.title)}" target="_blank" rel="noopener noreferrer" class="buy-btn">Contact SOAR to order</a>
         `;
-      } catch(err) {
+      } catch (err) {
         console.error(err);
         container.innerHTML = `<p class="error">Unable to load product.</p>`;
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      loadInclude('header-placeholder', 'header.html');
-      loadInclude('nav-placeholder', 'nav.html');
-      loadInclude('footer-placeholder', 'footer.html');
-      loadProduct();
-    });
+    document.addEventListener('DOMContentLoaded', loadProduct);
   </script>
 </head>
 
 <body>
-  <div id="header-placeholder"></div>
-  <div id="nav-placeholder"></div>
 
+  <!-- Dynamic Header and Nav -->
+  <header></header>
+  <nav></nav>
+
+  <!-- Product container -->
   <main>
     <div class="product-wrapper" id="product">
-      Loading product...
+      Loading e-book details…
     </div>
   </main>
 
-  <div id="footer-placeholder"></div>
+  <!-- Dynamic Footer -->
+  <footer></footer>
+
 </body>
 </html>
