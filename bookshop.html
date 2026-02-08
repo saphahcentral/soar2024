@@ -4,44 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SOAR Bookshop</title>
+
   <link rel="stylesheet" href="https://saphahcentral.github.io/saphah/style-public.css">
+
+  <!-- Dynamic includes -->
+  <script src="https://saphahcentral.github.io/saphah/includes-public.js" defer></script>
 
   <style>
     .book-cover { border: 2px solid #ccc; border-radius: 4px; margin-bottom: 10px; width: 150px; height: auto; }
     .book-block { margin-bottom: 40px; padding-bottom: 10px; border-bottom: 1px dashed #aaa; text-align: center; }
     .bookshop-header { text-align: center; margin-top: 30px; }
-    .book-btn { margin-top: 10px; display: inline-block; }
-    .donation a, .book-btn a { display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: #4caf50; color: white; border-radius: 8px; text-decoration: none; font-weight: bold; }
-    .donation a:hover, .book-btn a:hover { background-color: #2e5e2e; }
+    .book-btn, .details-btn { margin-top: 10px; display: inline-block; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; }
+    .book-btn { background-color: #4caf50; color: white; }
+    .book-btn:hover { background-color: #2e5e2e; }
+    .details-btn { background-color: royalblue; color: white; margin-left: 10px; }
+    .details-btn:hover { background-color: navy; }
     .note { text-align: center; font-style: italic; margin: 20px 0; }
     .free-resources { text-align: center; margin: 30px 0; }
     .free-resources a { font-weight: bold; text-decoration: underline; }
   </style>
 
-  <!-- Dynamic includes -->
   <script defer>
-    async function loadInclude(id, file) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      try {
-        const res = await fetch(file);
-        if (!res.ok) throw new Error(`Failed to fetch ${file}`);
-        el.innerHTML = await res.text();
-      } catch(err) {
-        el.innerHTML = `<p style="color:red; text-align:center;">Failed to load ${file}</p>`;
-        console.error(err);
-      }
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-      loadInclude('header-placeholder', 'header.html');
-      loadInclude('nav-placeholder', 'nav_bar.html');
-      loadInclude('footer-placeholder', 'footer.html');
-    });
-  </script>
-
-  <!-- Load catalog.json and render books -->
-  <script defer>
-    async function loadCatalog() {
+    async function loadBooks() {
       try {
         const res = await fetch('https://saphahcentral.github.io/soar2024/catalog.json');
         const catalog = await res.json();
@@ -65,40 +49,40 @@
           desc.textContent = item.description || '';
           block.appendChild(desc);
 
-          // Order link
           if(item.price && item.price > 0){
-            const donateDiv = document.createElement('div');
-            donateDiv.className = 'donation';
-            const link = document.createElement('a');
-            link.href = `sales.html?code=${item.id}`;
-            link.textContent = `Order $${item.price} - Contact SOAR to order`;
-            donateDiv.appendChild(link);
-            block.appendChild(donateDiv);
+            const orderLink = document.createElement('a');
+            orderLink.href = `mailto:soar6027@outlook.com?subject=SOAR%20Order&body=Hello,%20I%20would%20like%20to%20order%20${encodeURIComponent(item.title)}`;
+            orderLink.textContent = `Order $${item.price.toFixed(2)} - Contact SOAR to order`;
+            orderLink.className = 'book-btn';
+            block.appendChild(orderLink);
           }
 
-          // More Details link
-          const moreDiv = document.createElement('div');
-          moreDiv.className = 'book-btn';
-          const moreLink = document.createElement('a');
-          moreLink.href = `sales.html?code=${item.id}`;
-          moreLink.textContent = 'More Details';
-          moreDiv.appendChild(moreLink);
-          block.appendChild(moreDiv);
+          // MORE DETAILS link
+          const detailsLink = document.createElement('a');
+          detailsLink.href = `sales.html?code=${item.id}`;
+          detailsLink.textContent = 'MORE DETAILS';
+          detailsLink.className = 'details-btn';
+          block.appendChild(detailsLink);
 
           container.appendChild(block);
         });
 
       } catch(err) {
         console.error('Error loading catalog:', err);
-        document.getElementById('books-container').innerHTML = '<p style="color:red; text-align:center;">Failed to load catalog.</p>';
+        document.getElementById('books-container').innerHTML =
+          '<p style="color:red; text-align:center;">Failed to load catalog.</p>';
       }
     }
-    document.addEventListener('DOMContentLoaded', loadCatalog);
+
+    document.addEventListener('DOMContentLoaded', loadBooks);
   </script>
 </head>
+
 <body>
-  <div id="header-placeholder"></div>
-  <div id="nav-placeholder"></div>
+
+  <!-- Dynamic header and nav -->
+  <header></header>
+  <nav></nav>
 
   <header>
     <h1 class="bookshop-header">SOAR E-Book Shop</h1>
@@ -109,6 +93,7 @@
       These titles are offered as free resources, faith-based encouragement, or outreach support. Some link to partner ministries. All materials are static and available to read, download, or order manually.
     </p>
 
+    <!-- Books container -->
     <div id="books-container"></div>
 
     <p class="note">New items coming soon!</p>
@@ -120,6 +105,8 @@
     </div>
   </main>
 
-  <div id="footer-placeholder"></div>
+  <!-- Dynamic footer -->
+  <footer></footer>
+
 </body>
 </html>
