@@ -8,110 +8,109 @@
   <link rel="stylesheet" href="https://saphahcentral.github.io/saphah/style-public.css">
 
   <style>
-    .product-wrapper {
+    .product {
       max-width: 900px;
       margin: 40px auto;
       padding: 20px;
       text-align: center;
     }
 
-    .product-wrapper img {
-      max-width: 250px;
-      height: auto;
-      margin-bottom: 20px;
+    .product img {
+      max-width: 260px;
+      margin: 20px 0;
       border-radius: 6px;
     }
 
     .price {
-      font-size: 1.5em;
+      font-size: 1.6em;
       font-weight: bold;
-      margin: 15px 0;
+      margin: 20px 0;
       color: #2b6cb0;
     }
 
     .buy-btn {
       display: inline-block;
-      margin-top: 25px;
       padding: 14px 30px;
-      background-color: royalblue;
+      background: royalblue;
       color: #fff;
       text-decoration: none;
-      font-size: 1.1em;
       border-radius: 6px;
+      font-size: 1.1em;
     }
 
     .error {
-      color: red;
-      font-size: 1.2em;
-      margin-top: 50px;
+      color: darkred;
+      font-weight: bold;
     }
   </style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const container = document.getElementById("product");
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+
+  if (!code) {
+    container.innerHTML = "<p class='error'>No product code supplied.</p>";
+    return;
+  }
+
+  fetch("https://saphahcentral.github.io/soar2024/catalog.json")
+    .then(res => {
+      if (!res.ok) throw new Error("JSON fetch failed");
+      return res.json();
+    })
+    .then(items => {
+
+      if (!Array.isArray(items)) {
+        throw new Error("Catalog is not an array");
+      }
+
+      const book = items.find(b => b.code === code);
+
+      if (!book) {
+        throw new Error("Product not found: " + code);
+      }
+
+      container.innerHTML = `
+        <h2>${book.title}</h2>
+        <img src="${book.image}" alt="${book.title}">
+        <p>${book.description}</p>
+        <div class="price">${book.price}</div>
+        <a class="buy-btn"
+           href="${book.order}"
+           target="_blank"
+           rel="noopener">
+           Order / Enquire
+        </a>
+      `;
+    })
+    .catch(err => {
+      console.error(err);
+      container.innerHTML = `
+        <p class="error">
+          Unable to load product details.<br>
+          (${err.message})
+        </p>
+      `;
+    });
+
+});
+</script>
 </head>
 
 <body>
 
-<!-- Dynamic Header -->
-<div id="header-placeholder"></div>
+<header></header>
+<nav></nav>
 
-<!-- Dynamic Navigation -->
-<div id="nav-placeholder"></div>
+<main>
+  <div id="product" class="product">
+    Loading product…
+  </div>
+</main>
 
-<div class="product-wrapper" id="product"></div>
-
-<!-- Dynamic Footer -->
-<div id="footer-placeholder"></div>
-
-<script>
-/* ---------------------------------------------------
-   Dynamic includes
---------------------------------------------------- */
-fetch('header.html')
-  .then(r => r.text())
-  .then(d => document.getElementById('header-placeholder').innerHTML = d);
-
-fetch('nav_bar.html')
-  .then(r => r.text())
-  .then(d => document.getElementById('nav-placeholder').innerHTML = d);
-
-fetch('footer.html')
-  .then(r => r.text())
-  .then(d => document.getElementById('footer-placeholder').innerHTML = d);
-
-/* ---------------------------------------------------
-   Sales logic
---------------------------------------------------- */
-const params = new URLSearchParams(window.location.search);
-const productId = params.get('id');
-const container = document.getElementById('product');
-
-if (!productId) {
-  container.innerHTML = `<p class="error">No product specified.</p>`;
-  throw new Error('Missing product ID');
-}
-
-fetch('catalog.json')
-  .then(r => r.json())
-  .then(data => {
-    const product = data.products.find(p => p.id === productId);
-
-    if (!product) {
-      container.innerHTML = `<p class="error">Product not found.</p>`;
-      return;
-    }
-
-    container.innerHTML = `
-      <h2>${product.title}</h2>
-      <img src="${product.thumb}" alt="${product.title}">
-      <p>${product.description}</p>
-      <div class="price">${product.price}</div>
-      <a href="mailto:soar6027@outlook.com?subject=SOAR%20Order&body=Hello%2C%20I%20would%20like%20to%20order..." target="_blank" rel="noopener noreferrer" style="background-color: royalblue; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; display: inline-block;">Contact SOAR to order</a>
-    `;
-  })
-  .catch(err => {
-    console.error(err);
-    container.innerHTML = `<p class="error">Unable to load product.</p>`;
-  });
-</script>
+<footer></footer>
 
 </body>
 </html>
