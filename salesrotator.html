@@ -4,30 +4,64 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SOAR Featured E-Book</title>
+
   <link rel="stylesheet" href="https://saphahcentral.github.io/saphah/style-public.css">
+
+  <!-- Dynamic includes loader -->
+  <script src="https://saphahcentral.github.io/saphah/includes-public.js" defer></script>
+
+  <!-- Sales rotator logic -->
+  <script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('https://saphahcentral.github.io/soar2024/catalog.json')
+        .then(res => {
+          if (!res.ok) throw new Error('catalog.json not found');
+          return res.json();
+        })
+        .then(data => {
+          if (!Array.isArray(data) || data.length === 0) {
+            document.getElementById('rotator-placeholder').innerText =
+              'No e-books available at this time.';
+            return;
+          }
+
+          const book = data[Math.floor(Math.random() * data.length)];
+
+          document.getElementById('rotator-placeholder').innerHTML = `
+            <img src="${book.thumb}" alt="${book.title}">
+            <h3>${book.title}</h3>
+            <p>${book.description}</p>
+            <a href="sales.html?code=${book.code}">
+              View / Order Now
+            </a>
+          `;
+        })
+        .catch(err => {
+          console.error(err);
+          document.getElementById('rotator-placeholder').innerText =
+            'Unable to load featured e-book.';
+        });
+    });
+  </script>
+
   <style>
     .rotator {
       text-align: center;
-      margin: 20px;
+      margin: 30px auto;
+      max-width: 400px;
     }
     .rotator img {
       max-width: 200px;
-      height: auto;
       border: 2px solid #ccc;
-      border-radius: 5px;
-    }
-    .rotator h3 {
-      margin: 10px 0 5px 0;
-    }
-    .rotator p {
-      margin: 0 0 10px 0;
+      border-radius: 6px;
+      margin-bottom: 10px;
     }
     .rotator a {
       display: inline-block;
-      padding: 8px 16px;
+      padding: 10px 18px;
       background-color: royalblue;
-      color: white;
-      border-radius: 5px;
+      color: #fff;
+      border-radius: 6px;
       text-decoration: none;
       font-weight: bold;
     }
@@ -36,33 +70,24 @@
     }
   </style>
 </head>
+
 <body>
-  <div class="rotator" id="rotator-placeholder">
-    Loading featured e-book...
-  </div>
 
-  <script defer>
-    // Fetch catalog.json and pick a random e-book
-    fetch('catalog.json')
-      .then(response => response.json())
-      .then(data => {
-        if (!data || !data.length) return;
+  <!-- Dynamic Header -->
+  <div id="header-placeholder"></div>
 
-        const randomIndex = Math.floor(Math.random() * data.length);
-        const book = data[randomIndex];
+  <!-- Dynamic Navigation -->
+  <div id="nav-placeholder"></div>
 
-        const html = `
-          <img src="${book.thumb}" alt="${book.title}" />
-          <h3>${book.title}</h3>
-          <p>${book.description}</p>
-          <a href="sales.html?code=${book.code}">View / Order Now</a>
-        `;
-        document.getElementById('rotator-placeholder').innerHTML = html;
-      })
-      .catch(err => {
-        console.error('Error loading catalog.json:', err);
-        document.getElementById('rotator-placeholder').innerHTML = 'Unable to load e-book at this time.';
-      });
-  </script>
+  <!-- Main Content -->
+  <main>
+    <div class="rotator" id="rotator-placeholder">
+      Loading featured e-book…
+    </div>
+  </main>
+
+  <!-- Dynamic Footer -->
+  <div id="footer-placeholder"></div>
+
 </body>
 </html>
