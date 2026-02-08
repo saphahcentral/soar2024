@@ -6,62 +6,31 @@
   <title>SOAR Featured E-Book</title>
 
   <link rel="stylesheet" href="https://saphahcentral.github.io/saphah/style-public.css">
-
-  <!-- Dynamic includes loader -->
   <script src="https://saphahcentral.github.io/saphah/includes-public.js" defer></script>
-
-  <!-- Sales rotator logic -->
-  <script defer>
-    document.addEventListener('DOMContentLoaded', () => {
-      fetch('https://saphahcentral.github.io/soar2024/catalog.json')
-        .then(res => {
-          if (!res.ok) throw new Error('catalog.json not found');
-          return res.json();
-        })
-        .then(data => {
-          if (!Array.isArray(data) || data.length === 0) {
-            document.getElementById('rotator-placeholder').innerText =
-              'No e-books available at this time.';
-            return;
-          }
-
-          const book = data[Math.floor(Math.random() * data.length)];
-
-          document.getElementById('rotator-placeholder').innerHTML = `
-            <img src="${book.thumb}" alt="${book.title}">
-            <h3>${book.title}</h3>
-            <p>${book.description}</p>
-            <a href="sales.html?code=${book.code}">
-              View / Order Now
-            </a>
-          `;
-        })
-        .catch(err => {
-          console.error(err);
-          document.getElementById('rotator-placeholder').innerText =
-            'Unable to load featured e-book.';
-        });
-    });
-  </script>
 
   <style>
     .rotator {
       text-align: center;
-      margin: 30px auto;
-      max-width: 400px;
+      margin: 30px;
     }
     .rotator img {
       max-width: 200px;
+      height: auto;
       border: 2px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    .rotator h3 {
+      margin: 10px 0 5px 0;
+    }
+    .rotator p {
+      margin: 0 0 10px 0;
     }
     .rotator a {
       display: inline-block;
-      padding: 10px 18px;
+      padding: 8px 16px;
       background-color: royalblue;
-      color: #fff;
-      border-radius: 6px;
+      color: white;
+      border-radius: 5px;
       text-decoration: none;
       font-weight: bold;
     }
@@ -73,21 +42,41 @@
 
 <body>
 
-  <!-- Dynamic Header -->
-  <div id="header-placeholder"></div>
+  <!-- REQUIRED ANCHORS -->
+  <header></header>
+  <nav></nav>
 
-  <!-- Dynamic Navigation -->
-  <div id="nav-placeholder"></div>
-
-  <!-- Main Content -->
   <main>
     <div class="rotator" id="rotator-placeholder">
       Loading featured e-book…
     </div>
   </main>
 
-  <!-- Dynamic Footer -->
-  <div id="footer-placeholder"></div>
+  <footer></footer>
+
+  <script defer>
+    fetch("catalog.json")
+      .then(res => res.json())
+      .then(items => {
+        if (!items || !items.length) {
+          throw new Error("Catalog empty");
+        }
+
+        const book = items[Math.floor(Math.random() * items.length)];
+
+        document.getElementById("rotator-placeholder").innerHTML = `
+          <img src="${book.thumb}" alt="${book.title}">
+          <h3>${book.title}</h3>
+          <p>${book.description}</p>
+          <a href="sales.html?code=${book.code}">View / Order Now</a>
+        `;
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById("rotator-placeholder").innerText =
+          "Featured item unavailable at this time.";
+      });
+  </script>
 
 </body>
 </html>
