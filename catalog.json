@@ -23,5 +23,25 @@
       "description": "A practical, compassionate guide to cultivating and using supportive herbal remedies for those facing cancer and chronic illness.",
       "status": "active"
     }
+    {
+      "id": "SOAR003",
+      "title": "Immunity & Vitality: Strengthening Your Body Naturally",
+      "type": "ebook",
+      "price": 19.99,
+      "thumb": "https://saphahcentral.github.io/soar2024/THUMBS/Immunity & Vitality.png",
+      "pdf": "https://saphahcentral.github.io/soar2024/PDFS/Immunity & Vitality.pdf",
+      "description": "A comprehensive 135-page premium wellness manual focused on strengthening the immune system naturally. Covers nutrition, herbal allies, detox strategies, lifestyle optimization, stress management, sleep science, and long-term vitality building for individuals and families.",
+      "status": "active"
+    },
+    {
+      "id": "SOAR004",
+      "title": "Mind-Body Wellness: Stress Reduction & Emotional Balance",
+      "type": "ebook",
+      "price": 19.99,
+      "thumb": "https://saphahcentral.github.io/soar2024/THUMBS/Mind & Body Wellness.png",
+      "pdf": "https://saphahcentral.github.io/soar2024/PDFS/Mind & Body Wellness.pdf",
+      "description": "An extensive 135-page guide to mental clarity, emotional resilience, and holistic stress reduction. Integrates practical lifestyle strategies, natural support methods, mindfulness principles, and sustainable routines for long-term emotional and physical balance.",
+      "status": "active"
+    }
   ]
 }
