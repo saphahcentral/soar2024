@@ -47,45 +47,53 @@
     }
   </style>
 
-  <script defer>
-    // Extract product from catalog.json and render page
-    async function loadProduct() {
-      const params = new URLSearchParams(window.location.search);
-      const productId = params.get('code');
-      const container = document.getElementById('product');
+<script defer>
+// Extract product from catalog.json and render page
+async function loadProduct() {
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get('code');
+  const container = document.getElementById('product');
 
-      if (!productId) {
-        container.innerHTML = `<p class="error">No product specified.</p>`;
-        return;
-      }
+  if (!productId) {
+    container.innerHTML = `<p class="error">No product specified.</p>`;
+    return;
+  }
 
-      try {
-        const res = await fetch('https://saphahcentral.github.io/soar2024/catalog.json');
-        const catalog = await res.json();
+  try {
+    const res = await fetch('https://saphahcentral.github.io/soar2024/catalog.json');
+    const catalog = await res.json();
 
-        const product = catalog.items.find(p => p.id === productId);
+    const product = catalog.items.find(p => p.id === productId);
 
-        if (!product) {
-          container.innerHTML = `<p class="error">Product not found.</p>`;
-          return;
-        }
-
-        container.innerHTML = `
-          <h2>${product.title}</h2>
-          <img src="${product.thumb}" alt="${product.title}">
-          <p>${product.description}</p>
-          <div class="price">$${product.price.toFixed(2)}</div>
-          <a href="${product.pdf}" target="_blank" rel="noopener noreferrer" class="read-btn">READ ONLINE</a>
-          <a href="mailto:soar6027@outlook.com?subject=SOAR%20Order&body=Hello,%20I%20would%20like%20to%20order%20${encodeURIComponent(product.title)}" target="_blank" rel="noopener noreferrer" class="buy-btn">Contact SOAR to order</a>
-        `;
-      } catch (err) {
-        console.error(err);
-        container.innerHTML = `<p class="error">Unable to load product.</p>`;
-      }
+    if (!product) {
+      container.innerHTML = `<p class="error">Product not found.</p>`;
+      return;
     }
 
-    document.addEventListener('DOMContentLoaded', loadProduct);
-  </script>
+    // Build PayPal.me link with product ID in note
+    const paypalLink = `https://www.paypal.me/swdb2018/${product.price}?note=${encodeURIComponent(product.id)}`;
+
+    container.innerHTML = `
+      <h2>${product.title}</h2>
+      <img src="${product.thumb}" alt="${product.title}">
+      <p>${product.description}</p>
+      <div class="price">$${product.price.toFixed(2)}</div>
+      <a href="${product.pdf}" target="_blank" rel="noopener noreferrer" class="read-btn">READ ONLINE</a>
+      <a href="${paypalLink}" target="_blank" rel="noopener noreferrer" class="buy-btn">
+        Pay $${product.price.toFixed(2)} via PayPal
+      </a>
+      <p class="disclaimer">
+        Payments are processed via PayPal to the bookshop's owner managing this resource. Note the company name is <strong>Saphah Central Business Services inc. Derech Olam Ministries</strong> and is managed by <strong>M C Sampson</strong>.
+      </p>
+    `;
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = `<p class="error">Unable to load product.</p>`;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadProduct);
+</script>
 </head>
 
 <body>
