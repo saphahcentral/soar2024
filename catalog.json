@@ -42,6 +42,17 @@
       "pdf": "https://saphahcentral.github.io/soar2024/PDFS/Mind & Body Wellness.pdf",
       "description": "An extensive 135-page guide to mental clarity, emotional resilience, and holistic stress reduction. Integrates practical lifestyle strategies, natural support methods, mindfulness principles, and sustainable routines for long-term emotional and physical balance.",
       "status": "active"
+    },
+    {
+      "id": "SOAR005",
+      "title": "Home Health & Emergency Survival Guide",
+      "type": "ebook",
+      "price": 9.99,
+      "thumb": "https://saphahcentral.github.io/soar2024/THUMBS/Home Health & Emergency Survival Guide.jpg",
+      "pdf": "https://saphahcentral.github.io/soar2024/PDFS/Home Health & Emergency Survival Guide.pdf",
+      "description": "A practical mini booklet on how to handle everyday health issues and emergencies using basic natural remedies.",
+      "status": "active"
     }
+
   ]
 }
