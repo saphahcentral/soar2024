@@ -52,7 +52,16 @@
       "pdf": "https://saphahcentral.github.io/soar2024/PDFS/Home Health & Emergency Survival Guide.pdf",
       "description": "A practical mini booklet on how to handle everyday health issues and emergencies using basic natural remedies.",
       "status": "active"
+    },
+    {
+      "id": "SOAR006",
+      "title": "The Healing Kitchen",
+      "type": "ebook",
+      "price": 9.99,
+      "thumb": "https://saphahcentral.github.io/soar2024/THUMBS/The Healing Kitchen.jpg",
+      "pdf": "https://saphahcentral.github.io/soar2024/PDFS/The Healing Kitchen.pdf",
+      "description": "A practical guide to using simple everyday foods as natural daily support for energy, recovery, and overall well-being.",
+      "status": "active"
     }
-
   ]
 }
